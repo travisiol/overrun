@@ -1,0 +1,407 @@
+@import "tailwindcss";
+
+/* ------------------------------------------------------------------ *
+ * Landing scene
+ *
+ * The hero is a set of flat layers stacked by z-index and animated in on
+ * a stagger: sky -> clouds -> moon -> mound -> arm -> grass. Every layer
+ * is a background image so the whole thing costs one paint and no JS.
+ * ------------------------------------------------------------------ */
+
+:root {
+  --accent: #ff8c42;
+  --accent-deep: #c45e20;
+  --ink: #1a0a0a;
+}
+
+html,
+body {
+  padding: 0;
+  margin: 0;
+}
+
+body {
+  background: var(--ink);
+}
+
+.wrapper {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+  font-family: Montserrat, system-ui, sans-serif;
+  background: radial-gradient(#ffd4a0 0%, #e8945a 50%, #c76b3a 100%);
+}
+
+/* --- headline block ------------------------------------------------ */
+
+#big-text {
+  position: absolute;
+  top: 8%;
+  left: 8%;
+  z-index: 2000;
+  width: 35%;
+  animation: bounceInDown 1s 4s both;
+}
+
+#big-text h1 {
+  margin-bottom: 12px;
+  font-family: Impact, "Arial Black", sans-serif;
+  font-size: 80px;
+  font-weight: 900 !important;
+  line-height: 80px;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: #e8a838;
+  -webkit-text-stroke: 1px rgba(100, 60, 0, 0.3);
+  text-shadow:
+    0 2px #8b5e10,
+    0 4px #6b4800,
+    0 6px #4a3200,
+    0 8px #2a1a00,
+    0 10px 8px rgba(0, 0, 0, 0.4),
+    0 12px 20px rgba(0, 0, 0, 0.3);
+}
+
+#big-text p {
+  margin-bottom: 16px;
+  font-size: 18px;
+  line-height: 24px;
+  color: #fff;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+.btn-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.le-btn.play-btn {
+  display: inline-block;
+  padding: 14px 28px;
+  border-radius: 6px;
+  background-color: var(--accent);
+  color: #fff;
+  font-size: 15px;
+  font-weight: 800;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  text-decoration: none;
+  transition: all 0.2s;
+  box-shadow:
+    0 4px var(--accent-deep),
+    0 6px 20px rgba(255, 140, 66, 0.3);
+}
+
+.le-btn.play-btn:hover {
+  background-color: #ffa060;
+  transform: translateY(-2px);
+  box-shadow:
+    0 6px var(--accent-deep),
+    0 8px 24px rgba(255, 140, 66, 0.4);
+}
+
+.le-btn.play-btn.small-btn {
+  padding: 10px 20px;
+  font-size: 12px;
+  letter-spacing: 1.5px;
+}
+
+.play-icon-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 46px;
+  height: 46px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.1);
+  text-decoration: none;
+  transition: all 0.2s;
+}
+
+.play-icon-btn:hover {
+  background: rgba(255, 255, 255, 0.2);
+  border-color: rgba(255, 255, 255, 0.6);
+  transform: scale(1.1);
+}
+
+.play-icon-btn.small-icon {
+  width: 36px;
+  height: 36px;
+}
+
+.coming-soon {
+  display: block;
+  margin-top: 14px;
+  font-size: 11px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.twitter-link {
+  position: absolute;
+  top: 16px;
+  right: 20px;
+  z-index: 2000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border: 1.5px solid rgba(255, 255, 255, 0.25);
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.6);
+  /* -webkit- and standard are written as one declaration on purpose:
+     splitting them lets a minifier drop the standard property. */
+  -webkit-backdrop-filter: blur(4px);
+  backdrop-filter: blur(4px);
+  text-decoration: none;
+  transition: all 0.2s;
+}
+
+.twitter-link:hover {
+  background: rgba(0, 0, 0, 0.8);
+  border-color: rgba(255, 255, 255, 0.5);
+  transform: scale(1.1);
+}
+
+/* --- scene layers -------------------------------------------------- */
+
+#texture {
+  position: fixed;
+  z-index: 75;
+  width: 100%;
+  height: 100%;
+  opacity: 0.4;
+  pointer-events: none;
+}
+
+#clouds {
+  position: absolute;
+  top: 5%;
+  left: 0;
+  z-index: 75;
+  width: 100%;
+  height: 416px;
+  background: url(/clouds.svg) repeat-x;
+  animation:
+    bounceInDown 2s linear,
+    panClouds 60s linear infinite;
+}
+
+#moon {
+  position: fixed;
+  bottom: 300px;
+  left: 0;
+  right: 0;
+  z-index: 70;
+  width: 292px;
+  height: 272px;
+  margin: auto;
+  background: url(/moon.svg) no-repeat;
+  animation: bounceInUp 1s 2s both;
+}
+
+#hole {
+  position: fixed;
+  bottom: -10px;
+  left: 0;
+  right: 0;
+  z-index: 90;
+  width: 531px;
+  height: 250px;
+  margin: auto;
+  background: url(/hand-hole.svg) no-repeat;
+  animation: bounceInUp 1s 3s both;
+}
+
+#hand {
+  position: fixed;
+  bottom: -20px;
+  left: 0;
+  right: 0;
+  z-index: 80;
+  width: 338px;
+  height: 600px;
+  margin: auto;
+  background: url(/hand.svg) no-repeat;
+  transition: bottom 1.5s;
+  animation: bounceInUp 1s 3.5s both;
+}
+
+#hand .text {
+  position: absolute;
+  top: 73px;
+  left: 28px;
+  right: 0;
+  z-index: 100;
+  width: 116px;
+  margin: auto;
+  font-family: Montserrat, system-ui, sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 18px;
+  text-align: center;
+  text-transform: uppercase;
+  transform: rotate(11deg);
+}
+
+.sign-text {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 16px;
+  font-weight: 800;
+  color: #222;
+}
+
+.hand-play-btn {
+  display: inline-block;
+  padding: 5px 10px;
+  border-radius: 3px;
+  background: #000;
+  color: #fff;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-decoration: none;
+  transition: all 0.2s;
+}
+
+.hand-play-btn:hover {
+  background: #39ff14;
+  color: #000;
+}
+
+#grass {
+  position: fixed;
+  bottom: -150px;
+  left: -100px;
+  z-index: 100;
+  width: 150%;
+  height: 428px;
+  background: url(/grass.svg) repeat-x;
+  transition: transform 0.3s;
+  animation: bounceInUp 1s 1s both;
+}
+
+#grass2 {
+  position: fixed;
+  bottom: -170px;
+  left: -150px;
+  z-index: 100;
+  width: 150%;
+  height: 428px;
+  background: url(/grass2.svg) repeat-x;
+  transition: transform 0.3s;
+  animation: bounceInUp 1s 1.5s both;
+}
+
+/* --- keyframes ----------------------------------------------------- */
+
+@keyframes bounceInDown {
+  0% {
+    opacity: 0;
+    transform: translateY(-200px);
+  }
+  60% {
+    transform: translateY(20px);
+  }
+  80% {
+    transform: translateY(-10px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes bounceInUp {
+  0% {
+    opacity: 0;
+    transform: translateY(200px);
+  }
+  60% {
+    transform: translateY(-20px);
+  }
+  80% {
+    transform: translateY(10px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes panClouds {
+  0% {
+    background-position-x: 0;
+  }
+  100% {
+    background-position-x: -1200px;
+  }
+}
+
+@media (max-width: 850px) {
+  #big-text {
+    top: 5%;
+    left: 8%;
+    width: 80%;
+  }
+  #big-text h1 {
+    font-size: 48px;
+    line-height: 50px;
+  }
+  #big-text p {
+    font-size: 13px;
+  }
+  .le-btn.play-btn {
+    padding: 10px 20px;
+    font-size: 12px;
+  }
+}
+
+/* ------------------------------------------------------------------ *
+ * Shared UI (leaderboard / api keys / play gate)
+ * ------------------------------------------------------------------ */
+
+.mono-page {
+  min-height: 100vh;
+  padding: 40px 20px;
+  background: linear-gradient(180deg, #1a0a0a 0%, #2a1508 100%);
+  font-family: "Courier New", monospace;
+}
+
+.wallet-btn-wrapper .connect-btn,
+.connect-btn {
+  padding: 14px 32px;
+  border: 2px solid var(--accent);
+  border-radius: 6px;
+  background: transparent;
+  color: var(--accent);
+  font-family: "Courier New", monospace;
+  font-size: 14px;
+  font-weight: 800;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.wallet-btn-wrapper .connect-btn:hover,
+.connect-btn:hover {
+  background: rgba(255, 140, 66, 0.1);
+  box-shadow: 0 0 20px rgba(255, 140, 66, 0.2);
+}
+
+.nav-pill:hover {
+  border-color: #555;
+  color: #ddd;
+}
+
+.buy-keys-link:hover {
+  background: rgba(255, 140, 66, 0.2);
+  border-color: rgba(255, 140, 66, 0.6);
+}
